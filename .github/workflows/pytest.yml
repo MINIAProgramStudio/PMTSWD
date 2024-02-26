@@ -1,7 +1,7 @@
 name: Run pytest
 
 on:
-  merdge:
+  merge:
     branches:
       - main
       - dev
