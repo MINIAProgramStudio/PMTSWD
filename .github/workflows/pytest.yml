@@ -1,7 +1,7 @@
 name: Run pytest
 
 on:
-  merge:
+  pull_request:
     branches:
       - main
       - dev
