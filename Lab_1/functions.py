@@ -1,6 +1,7 @@
 import random
 
 def dumb_function(a):
+    1+1
     if a == 1:
         return 'oogaa-booga, heheheheheeeeeeee'
     else:
