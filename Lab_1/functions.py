@@ -1,2 +1,2 @@
-def dumb_function():
-    pass
+def dumb_function(a,b):
+    return 'oogaa-booga'
