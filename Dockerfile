@@ -1,14 +1,23 @@
-# runner
-FROM python:3.13.0b1-alpine3.19
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# copy all files from current directory
-COPY . .
+# Set the working directory in the container
+WORKDIR /app
 
-# grant the permission rights from The Emperor
-RUN chmod 777 ./*.*
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# run unittests
+# Check if requirements.txt exists and install any needed packages specified in it
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
-RUN python -m unittest test_*.py
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-ENTRYPOINT ./main.py
+# Define environment variable
+ENV NAME World
+
+# Run main.py when the container launches
+ENTRYPOINT ["python", "main.py"]
+
+# Default command to run unit tests (this can be overridden when running the container)
+CMD ["pytest", "test_functions.py"]
