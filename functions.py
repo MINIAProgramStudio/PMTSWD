@@ -1,11 +1,7 @@
 import random
 
 def dumb_function(a):
-    1+1
-    if a == 1:
-        return 'oogaa-booga, heheheheheeeeeeee'
-    else:
-        return 'not oogaa-booga'
+    return a+1
 
 def risky_function():
     if random.random() < 0.0001:
