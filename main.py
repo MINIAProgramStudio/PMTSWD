@@ -15,9 +15,10 @@ def loop():
         sys.stderr.write("No more input. Waitmode.")
 
 if __name__ == "__main__":
-    while True:
-        if sys.stdin.isatty():
+    if sys.stdin.isatty():
             loop()
-        else:
-            print("Waitmode.")
-            time.sleep(1)
+    else:
+        print("Waitmode.")
+        time.sleep(1)
+
+# commit trigger
