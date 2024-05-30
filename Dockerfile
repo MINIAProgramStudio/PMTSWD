@@ -12,3 +12,6 @@ RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.
 
 # Run main.py when the container launches
 ENTRYPOINT ["python", "main.py"]
+
+# Uncle Fester the python tester
+CMD "test_functions.py"
