@@ -24,7 +24,7 @@ jobs:
       run:  echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build  Docker image
-      run: docker build -t mallard_a4 .
+      run: docker build -t misube/lab5 .
 
     - name: Push image to hub
       run: docker push mallard_a4
@@ -48,8 +48,8 @@ jobs:
         password: ${{ secrets.TOKEN }}
 
     - name: Pull Docker image
-      run: docker pull ghcr.io/${{ github.repository_owner }}/my-app:latest
+      run: docker pull ghcr.io/misube/lab5:latest
 
     - name: Run tests
       run: |
-        docker run --rm ghcr.io/${{ github.repository_owner }}/my-app:latest pytest test_functions.py
+        docker run --rm ghcr.io/misube/lab5/my-app:latest pytest test_functions.py
