@@ -29,8 +29,5 @@ jobs:
     - name: Push image to hub
       run: docker push misube/lab5
 
-    - name: Pull Docker image
-      run: docker pull ghcr.io/misube/lab5
-
     - name: Run tests
       run: docker run --rm ghcr.io/misube/lab5 pytest test_functions.py
