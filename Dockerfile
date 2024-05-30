@@ -12,6 +12,3 @@ RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.
 
 # Run main.py when the container launches
 ENTRYPOINT ["python", "main.py"]
-
-# Default command to run unit tests (this can be overridden when running the container)
-CMD "test_functions.py"
