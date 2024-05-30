@@ -10,14 +10,8 @@ COPY . /app
 # Check if requirements.txt exists and install any needed packages specified in it
 RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Define environment variable
-ENV NAME World
-
 # Run main.py when the container launches
 ENTRYPOINT ["python", "main.py"]
 
 # Default command to run unit tests (this can be overridden when running the container)
-CMD ["pytest", "test_functions.py"]
+CMD "test_functions.py"
