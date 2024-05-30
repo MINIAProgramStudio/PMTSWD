@@ -27,7 +27,7 @@ jobs:
       run: docker build -t misube/lab5 .
 
     - name: Push image to hub
-      run: docker push mallard_a4
+      run: docker push misube/lab5
 
   test:
     runs-on: ubuntu-latest
