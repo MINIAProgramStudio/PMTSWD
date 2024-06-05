@@ -1,5 +1,4 @@
 provider "aws" {
-
   access_key = "test"
   secret_key = "test"
   region     = "us-east-1"
@@ -69,6 +68,33 @@ resource "aws_iam_role" "lambda-iam" {
   assume_role_policy = data.aws_iam_policy_document.assume-role.json
 }
 
+resource "aws_iam_policy" "lambda_s3_policy" {
+  name        = "lambda_s3_policy"
+  description = "Policy for Lambda to access S3 buckets"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::input-bucket/*",
+          "arn:aws:s3:::output-bucket/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attach" {
+  role       = aws_iam_role.lambda-iam.name
+  policy_arn = aws_iam_policy.lambda_s3_policy.arn
+}
+
 data "archive_file" "lambda" {
   type        = "zip"
   source_dir  = "${path.module}/lambda/"
@@ -83,7 +109,7 @@ resource "aws_lambda_function" "lambda" {
   runtime       = "python3.12"
 }
 
-resource "aws_lambda_permission" "test" {
+resource "aws_lambda_permission" "run-lambda" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.function_name
@@ -97,5 +123,5 @@ resource "aws_s3_bucket_notification" "aws-lambda-trigger" {
     lambda_function_arn = aws_lambda_function.lambda.arn
     events              = ["s3:ObjectCreated:*"]
   }
-  depends_on = [aws_lambda_permission.test]
+  depends_on = [aws_lambda_permission.run-lambda]
 }
