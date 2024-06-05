@@ -154,3 +154,4 @@ cython_debug/
 terraform.tfstate
 localstack_providers_override.tf
 terraform/terraform.tfstate.backup
+terraform/lambda.zip
