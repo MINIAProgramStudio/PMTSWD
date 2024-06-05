@@ -153,3 +153,4 @@ cython_debug/
 .terraform*
 terraform.tfstate
 localstack_providers_override.tf
+terraform/terraform.tfstate.backup
