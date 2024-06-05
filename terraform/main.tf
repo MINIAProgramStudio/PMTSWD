@@ -71,7 +71,7 @@ resource "aws_iam_role" "lambda-iam" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir = "${path.module}/lambda/"
+  source_dir  = "${path.module}/lambda/"
   output_path = "lambda.zip"
 }
 
@@ -79,6 +79,23 @@ resource "aws_lambda_function" "lambda" {
   filename      = "${path.module}/lambda.zip"
   function_name = "lambda_func"
   role          = aws_iam_role.lambda-iam.arn
-  handler       = "main.lambda_handler"
+  handler       = "lambda.lambda_handler"
   runtime       = "python3.12"
+}
+
+resource "aws_lambda_permission" "test" {
+  statement_id  = "AllowS3Invoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda.function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.input-bucket.arn
+}
+
+resource "aws_s3_bucket_notification" "aws-lambda-trigger" {
+  bucket = aws_s3_bucket.input-bucket.id
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.lambda.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+  depends_on = [aws_lambda_permission.test]
 }
