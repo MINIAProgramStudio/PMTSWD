@@ -37,7 +37,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "wipe-input" {
   }
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "wipe-utput" {
+resource "aws_s3_bucket_lifecycle_configuration" "wipe-output" {
   bucket = aws_s3_bucket.output-bucket.id
 
   rule {
