@@ -9,10 +9,10 @@ provider "aws" {
   skip_requesting_account_id  = true
 
   endpoints {
-        lambda     = "http://localhost:4566"
-        iam        = "http://localhost:4566"
-        s3         = "http://s3.localhost.localstack.cloud:4566"
-    }
+    lambda = "http://localhost:4566"
+    iam    = "http://localhost:4566"
+    s3     = "http://s3.localhost.localstack.cloud:4566"
+  }
 }
 
 resource "aws_s3_bucket" "input-bucket" {
@@ -23,28 +23,28 @@ resource "aws_s3_bucket" "output-bucket" {
   bucket = "output-bucket"
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "wipe_input" {
+resource "aws_s3_bucket_lifecycle_configuration" "wipe-input" {
   bucket = aws_s3_bucket.input-bucket.id
 
   rule {
     id = "3d-wipe"
 
     expiration {
-        days = 3
+      days = 3
     }
 
     status = "Enabled"
   }
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "wipe_output" {
-  bucket = aws_s3_bucket.input-bucket.id
+resource "aws_s3_bucket_lifecycle_configuration" "wipe-utput" {
+  bucket = aws_s3_bucket.output-bucket.id
 
   rule {
-    id = "30d--wipe"
+    id = "30d-wipe"
 
     expiration {
-        days = 30
+      days = 30
     }
 
     status = "Enabled"
