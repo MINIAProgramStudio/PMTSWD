@@ -1,0 +1,35 @@
+name: Unkle Fester the Docker image builder and python tester
+
+on:
+  push:
+    branches:
+      - main
+      - docker
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: lab5
+
+jobs:
+  everything:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to GitHub Container Registry
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} .
+
+    - name: Push image to GitHub Container Registry
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+
+    - name: Run tests
+      run: |
+        docker run misube/lab5
