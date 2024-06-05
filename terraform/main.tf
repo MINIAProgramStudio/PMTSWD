@@ -50,3 +50,35 @@ resource "aws_s3_bucket_lifecycle_configuration" "wipe-output" {
     status = "Enabled"
   }
 }
+
+data "aws_iam_policy_document" "assume-role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "lambda-iam" {
+  name               = "lambda-iam"
+  assume_role_policy = data.aws_iam_policy_document.assume-role.json
+}
+
+data "archive_file" "lambda" {
+  type        = "zip"
+  source_dir = "${path.module}/lambda/"
+  output_path = "lambda.zip"
+}
+
+resource "aws_lambda_function" "lambda" {
+  filename      = "${path.module}/lambda.zip"
+  function_name = "lambda_func"
+  role          = aws_iam_role.lambda-iam.arn
+  handler       = "main.lambda_handler"
+  runtime       = "python3.12"
+}
